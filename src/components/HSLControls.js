@@ -115,6 +115,33 @@ class HSLControls extends Component {
     }, this.handleMouse.bind(this))
   }
 
+  setMouseM(e, down=0){
+    e.preventDefault();
+    const x = e.touches[0] ? e.touches[0].clientX - e.target.parentNode.offsetLeft : this.state.mouse.x,
+          y = e.touches[0] ? e.touches[0].clientY - e.target.parentNode.offsetTop : this.state.mouse.y;
+
+    this.setState(prev => {
+      const isDown = down > 0 ? true : down < 0 ? false : prev.mouse.down;
+      if (down < 0){
+        prev.mouse.changing = false
+      } else if(this.mouseInRing(this.state.wheel.r1, this.state.wheel.r2, x, y)){
+          prev.mouse.changing = 'h';
+      }else if (this.mouseInRing(this.state.curve.r1, this.state.curve.r2, x, y)){
+        ['s', 'l'].forEach(prop => {
+          const angleR = this.state.curve[prop].angle
+          if(this.inAngle(this.mouseCenterAngle(x, y), angleR.start, angleR.end)){
+            prev.mouse.changing = prop;
+          }
+        })
+
+      }
+      prev.mouse.x = x;
+      prev.mouse.y = y;
+      prev.mouse.down = isDown;
+      return prev;
+    }, this.handleMouse.bind(this))
+  }
+
   allProps(){
     const r = (this.state.wheel.r2 - this.state.wheel.r1) / 2
     return {
@@ -165,6 +192,15 @@ class HSLControls extends Component {
         }}
         onMouseMove={(e) => {
           this.setMouse(e, 0);
+        }}
+        onTouchStart={(e)=>{
+          this.setMouseM(e, 1);
+        }}
+        onTouchMove={(e)=>{
+          this.setMouseM(e, 0);
+        }}
+        onTouchEnd={(e)=>{
+          this.setMouseM(e, -1)
         }}
       >
         <ControlCanvas

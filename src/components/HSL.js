@@ -88,7 +88,7 @@ class HSL extends Component {
 
   render () {
     return(
-      <div className="canvas-container">
+      <div className="canvas-container" style={{width:this.state.width, height:this.state.height}}>
         <ColorWheel passed={{...this.passedProps()}}
           center={this.center}
           radius1={this.state.wheel.r1}

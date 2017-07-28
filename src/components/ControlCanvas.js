@@ -47,6 +47,8 @@ class ControlCanvas extends Component {
 
     const color = this.state.color.rgb().string();
     ctx.fillStyle = color;
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = "rgba(0,0,0,0)";
     ctx.beginPath();
     ctx.arc(distance, 0, radius - widthDif, 0, Math.PI * 2);
     ctx.closePath;

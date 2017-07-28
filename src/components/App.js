@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import logo from '../img/logo.svg';
 import '../css/App.css';
-import CanvasHandler from './CanvasHandler';
-import Color from './Color';
 import ColorPicker from './ColorPicker';
 
 

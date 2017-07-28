@@ -8,22 +8,33 @@ class ColorPicker extends Component {
     super(props);
     const heightRatio = 220 / 300;
     const maxWidth = 800;
-    const width = props.window.width > maxWidth ? maxWidth : props.window.width;
+    let width = props.window.width > maxWidth ? maxWidth : props.window.width;
+    let height = width * heightRatio;
+    if(props.window.height < height){
+      height = props.window.height - 20;
+      width = height / heightRatio;
+    }
     this.state = {
       color: Color(randomColor()),
       maxWidth: maxWidth,
       heightRatio: heightRatio,
       window: props.window,
       width: width,
-      height: width * heightRatio
+      height: height
     }
   }
 
   componentWillReceiveProps(newProps){
     this.setState(prev => {
+      let width = newProps.window.width > prev.maxWidth ? prev.maxWidth : newProps.window.width;
+      let height = width * prev.heightRatio;
+      if(newProps.window.height < height){
+        height = newProps.window.height - 20;
+        width = height / prev.heightRatio;
+      }
       prev.window = newProps.window;
-      prev.width = newProps.window.width > prev.maxWidth ? prev.maxWidth : newProps.window.width;
-      prev.height = prev.width * prev.heightRatio;
+      prev.width = width;
+      prev.height = height;
       return prev;
     })
   }
